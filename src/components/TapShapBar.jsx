@@ -1,144 +1,216 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import Axios from "axios";
 import ReactEcharts from "echarts-for-react";
-import axios from "axios";
-import { InputLabel, MenuItem, Select, Grid, Box, FormControl } from "@mui/material";
-import Header from "./Header";
+import { Select, MenuItem } from "@mui/material";
 
-const PlayerAnalytics = () => {
+const Analytics = () => {
 
-	const [data, setData] = useState({});
-	const [selectedYear, setSelectedYear] = useState("");
-	const [selectedMonth, setSelectedMonth] = useState("");
-	const [showMonthDropdown, setShowMonthDropdown] = useState(true);
-    
+	const [playerList, setPlayerList] = useState([]);
+	const [selectedPlayer, setSelectedPlayer] = useState("");
+	const [playerData, setPlayerData] = useState({});
+	const [overallData, setOverallData] = useState({});
+	const [selectedFilterYear, setSelectedFilterYear] = useState("");
+	const [selectedFilterMonth, setSelectedFilterMonth] = useState("");
+	const [selectedFilterDay, setSelectedFilterDay] = useState("");
+
 	useEffect(() => {
-		axios
-			.get("http://13.215.25.111/analytics/overall/")
-			.then((res) => setData(res.data))
-			.catch((err) => console.error(err));
+		async function fetchData() {
+			try {
+				const res = await Axios.get(
+					"http://13.215.25.111/tap_shap_player_list"
+				);
+				setPlayerList(res.data);
+				console.log(playerList);
+			} catch (err) {
+				console.error(err);
+			}
+			try {
+				const res = await Axios.get("http://13.215.25.111/analytics/overall/");
+				setOverallData(res.data);
+				console.log(overallData);
+			} catch (err) {
+				console.error(err);
+			}
+		}
+		fetchData();
 	}, []);
-	const handleYearChange = (e) => {
-		setSelectedYear(e.target.value);
-		setShowMonthDropdown(true);
-		//handleMonthChange('');
-	};
-	const handleMonthChange = (e) => {
-		setSelectedMonth(e.target.value);
-	};
-	const getOption = () => {
-		if (!data.Player_Yearly_Analytics) {
-			return {};
-		}
-		let xAxisData = [];
-		let seriesData = [];
-		if (selectedYear && selectedMonth) {
-			const dailyData = data.Player_Daily_Analytics.filter(
-				(item) =>
-					item.year === parseInt(selectedYear) &&
-					item.month === parseInt(selectedMonth)
-			);
-			xAxisData = dailyData.map((item) => `${item.day}`);
-			seriesData = dailyData.map((item) => item.count);
-		} else if (selectedYear) {
-			const monthlyData = data.Player_Monthly_Analytics.filter(
-				(item) => item.year === parseInt(selectedYear)
-			);
-			xAxisData = monthlyData.map((item) => `${item.month}`);
-			seriesData = monthlyData.map((item) => item.count);
-		} else {
-			xAxisData = data.Player_Yearly_Analytics.map((item) => `${item.year}`);
-			seriesData = data.Player_Yearly_Analytics.map((item) => item.count);
-		}
-		return {
-			// title:{
-			// 	text: 'Anaytics'
-			// },
-			tooltip:{
-				trigger: 'axis',
-				axisPointer: {
-					type: 'shadow'
+
+	useEffect(() => {
+		async function fetchData() {
+			if (selectedPlayer) {
+				try {
+					const res = await Axios.get(
+						`http://13.215.25.111/analytics/user/${selectedPlayer}/`
+					);
+					setPlayerData(res.data);
+					console.log(playerData);
+				} catch (err) {
+					console.error(err);
 				}
+			}
+		}
+		fetchData();
+	}, [selectedPlayer]);
+
+	const handlePlayerSelection = (event) => {
+		setSelectedPlayer(event.target.value);
+		setSelectedFilterYear("");
+		setSelectedFilterMonth("");
+		setSelectedFilterDay("");
+	};
+	const handleFilterYearSelection = (event) => {
+		setSelectedFilterYear(event.target.value);
+		setSelectedFilterMonth("");
+		setSelectedFilterDay("");
+	};
+	const handleFilterMonthSelection = (event) => {
+		setSelectedFilterMonth(event.target.value);
+		setSelectedFilterDay("");
+	};
+	const handleFilterDaySelection = (event) => {
+		setSelectedFilterDay(event.target.value);
+		
+	};
+
+	const getDataToPlot = () => {
+		let data;
+		if (!selectedPlayer && !overallData.Player_Yearly_Analytics) {
+		  return [];
+		}
+		if (selectedPlayer && playerData.Player_Yearly_Analytics) {
+		  data = playerData.Player_Yearly_Analytics;
+		} else {
+		  data = overallData.Player_Yearly_Analytics;
+		}
+		if (!selectedFilterYear && !selectedFilterMonth && !selectedFilterDay) {
+		  return data.map((item) => [item.year, item.count]);
+		}
+		if (selectedFilterYear && !selectedFilterMonth && !selectedFilterDay) {
+		  data =
+			selectedPlayer && playerData.Player_Monthly_Analytics
+			  ? playerData.Player_Monthly_Analytics
+			  : overallData.Player_Monthly_Analytics;
+		  data = data.filter((item) => item.year === selectedFilterYear);
+		  return data.map((item) => [`${item.year}-${item.month}`, item.count]);
+		}
+		if (selectedFilterYear && selectedFilterMonth && !selectedFilterDay) {
+		  data =
+			selectedPlayer && playerData.Player_Daily_Analytics
+			  ? playerData.Player_Daily_Analytics
+			  : overallData.Player_Daily_Analytics;
+		  data = data.filter(
+			(item) =>
+			  item.year === selectedFilterYear && item.month === selectedFilterMonth
+		  );
+		  return data.map((item) => [
+			`${item.year}-${item.month}-${item.day}`,
+			item.count,
+		  ]);
+		}
+		if (selectedFilterYear && selectedFilterMonth && selectedFilterDay) {
+			data =
+				selectedPlayer && playerData.Player_Daily_Analytics
+					? playerData.Player_Daily_Analytics
+					: overallData.Player_Daily_Analytics;
+			data = data.filter(
+				(item) =>
+					item.year === selectedFilterYear && item.month === selectedFilterMonth 
+					&& item.day === selectedFilterDay );
+			return data.map((item) => [
+				`${item.year}-${item.month}-${item.day}`,
+					item.count,
+			]);
+		}
+	  };
+	const getYearOptions = () => {
+		if (!overallData.Player_Yearly_Analytics) {
+			return [];
+		}
+		return overallData.Player_Yearly_Analytics.map((item) => item.year);
+	};
+	const getMonthOptions = () => {
+		if (!overallData.Player_Monthly_Analytics) {
+			return [];
+		}
+		return overallData.Player_Monthly_Analytics.filter(
+			(item) => item.year === selectedFilterYear
+		).map((item) => item.month);
+	};
+	const getDayOptions = () => {
+		if (!overallData.Player_Daily_Analytics) {
+			return [];
+		}
+		return overallData.Player_Daily_Analytics.filter(
+			(item) =>
+				item.year === selectedFilterYear && item.month === selectedFilterMonth
+		).map((item) => item.day);
+	};
+	const options = {
+		tooltip: {},
+		xAxis: {
+			type: "category",
+			data: getDataToPlot().map((item) => item[0]),
+		},
+		yAxis: { type: "value" },
+		series: [
+			{
+				data: getDataToPlot().map((item) => item[1]),
+				type: "bar",
 			},
-			xAxis: {
-				type: "category",
-				data: xAxisData,
-				axisTick:{alignWithLabel: true}
-			},
-			yAxis: {
-				type: "value",
-			},
-			series: [
-				{
-					data: seriesData,
-					type: "bar",
-					label: {
-						show: false,
-						position: "top",
-						formatter: "{c}",
-					},
-				},
-			],
-		};
+		],
 	};
 	return (
-		<div>
-			<Box>
-				<Header title={""} subtitle="Analytics" />
-			</Box>
-			<Grid container spacing={2}>
-				{/* <Grid item xs={3}>
-					<InputLabel>Player</InputLabel>
-
-				</Grid> */}
-				<Grid item xs={3}>
-				<FormControl sx={{m:1, minWidth:100}}>
-				<InputLabel htmlFor="year-select">Year</InputLabel>
-				<Select
-					id="year-select"
-					value={selectedYear}
-					label="Year"
-					onChange={handleYearChange}
-				>
-					<MenuItem value=''>All</MenuItem>
-					{data.Player_Yearly_Analytics &&
-						data.Player_Yearly_Analytics.map((item) => (
-							<MenuItem key={item.year} value={item.year}>
-								{item.year}
-							</MenuItem>
-						))}
-				</Select>
-				</FormControl>
-				</Grid>
-				{showMonthDropdown && (
-					<Grid item xs={3}>
-						<FormControl sx={{m:1, minWidth:100}}>
-						<InputLabel htmlFor="month-select">Month</InputLabel>
-						<Select
-							id="month-select"
-							value={selectedMonth}
-							onChange={handleMonthChange}
-							label="Month"
-						>
-							<MenuItem value=''>All</MenuItem>
-							{data.Player_Monthly_Analytics &&
-								data.Player_Monthly_Analytics.filter(
-									(item) => item.year === parseInt(selectedYear)
-								).map((item) => (
-									<MenuItem key={item.month} value={item.month}>
-										{item.month}
-									</MenuItem>
-								))}
-						</Select>
-						</FormControl>
-					</Grid>
-				)}
-			</Grid>
-			<ReactEcharts
-				option={getOption()}
-				style={{ height: "600px", width: "100%" }}
-			/>
+		<div className="App">
+			<Select
+				value={selectedPlayer}
+				onChange={handlePlayerSelection}
+				displayEmpty
+			>
+				<MenuItem value=""> Select Player </MenuItem>
+				{playerList.map((player) => (
+					<MenuItem key={player} value={player}>
+						{player}
+					</MenuItem>
+				))}
+			</Select>
+			<Select
+				value={selectedFilterYear}
+				onChange={handleFilterYearSelection}
+				displayEmpty
+			>
+				<MenuItem value=""> Select Year </MenuItem>
+				{getYearOptions().map((year) => (
+					<MenuItem key={year} value={year}>
+						{year}
+					</MenuItem>
+				))}
+			</Select>
+			<Select
+				value={selectedFilterMonth}
+				onChange={handleFilterMonthSelection}
+				displayEmpty
+			>
+				<MenuItem value=""> Select Month </MenuItem>
+				{getMonthOptions().map((month) => (
+					<MenuItem key={month} value={month}>
+						{month}
+					</MenuItem>
+				))}
+			</Select>
+			<Select
+				value={selectedFilterDay}
+				onChange={handleFilterDaySelection}
+				displayEmpty
+			>
+				<MenuItem value=""> Select Day </MenuItem>
+				{getDayOptions().map((day) => (
+					<MenuItem key={day} value={day}>
+						{day}
+					</MenuItem>
+				))}
+			</Select>
+			<ReactEcharts option={options} />
 		</div>
 	);
 };
-
-export default PlayerAnalytics;
+export default Analytics;
