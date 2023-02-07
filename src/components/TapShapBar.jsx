@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactEcharts from "echarts-for-react";
 import axios from "axios";
-import { InputLabel, MenuItem, Select, Grid, Box } from "@mui/material";
+import { InputLabel, MenuItem, Select, Grid, Box, FormControl } from "@mui/material";
 import Header from "./Header";
 
 const PlayerAnalytics = () => {
@@ -20,6 +20,7 @@ const PlayerAnalytics = () => {
 	const handleYearChange = (e) => {
 		setSelectedYear(e.target.value);
 		setShowMonthDropdown(true);
+		//handleMonthChange('');
 	};
 	const handleMonthChange = (e) => {
 		setSelectedMonth(e.target.value);
@@ -49,7 +50,9 @@ const PlayerAnalytics = () => {
 			seriesData = data.Player_Yearly_Analytics.map((item) => item.count);
 		}
 		return {
-			
+			// title:{
+			// 	text: 'Anaytics'
+			// },
 			tooltip:{
 				trigger: 'axis',
 				axisPointer: {
@@ -83,11 +86,12 @@ const PlayerAnalytics = () => {
 				<Header title={""} subtitle="Analytics" />
 			</Box>
 			<Grid container spacing={2}>
-				<Grid item xs={3}>
+				{/* <Grid item xs={3}>
 					<InputLabel>Player</InputLabel>
 
-				</Grid>
+				</Grid> */}
 				<Grid item xs={3}>
+				<FormControl sx={{m:1, minWidth:100}}>
 				<InputLabel htmlFor="year-select">Year</InputLabel>
 				<Select
 					id="year-select"
@@ -103,14 +107,17 @@ const PlayerAnalytics = () => {
 							</MenuItem>
 						))}
 				</Select>
+				</FormControl>
 				</Grid>
 				{showMonthDropdown && (
 					<Grid item xs={3}>
+						<FormControl sx={{m:1, minWidth:100}}>
 						<InputLabel htmlFor="month-select">Month</InputLabel>
 						<Select
 							id="month-select"
 							value={selectedMonth}
 							onChange={handleMonthChange}
+							label="Month"
 						>
 							<MenuItem value=''>All</MenuItem>
 							{data.Player_Monthly_Analytics &&
@@ -122,6 +129,7 @@ const PlayerAnalytics = () => {
 									</MenuItem>
 								))}
 						</Select>
+						</FormControl>
 					</Grid>
 				)}
 			</Grid>

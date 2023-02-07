@@ -8,6 +8,8 @@ import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import GamesOutlinedIcon from '@mui/icons-material/GamesOutlined';
 import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
+import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined';
+
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
     const theme = useTheme();
@@ -30,7 +32,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 const Sidebar = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(true);
     const [selected, setSelected] = useState("Dashboard");
 
     return(
@@ -125,14 +127,22 @@ const Sidebar = () => {
                     Games
                 </Typography> */}
                 <SubMenu title="Games" icon={<GamesOutlinedIcon />}>
-                <Item
+                  <Item
                     title="Tap Shap"
                     to="/tapShap"
                     icon={<AnalyticsOutlinedIcon />}
                     selected={selected}
                     setSelected={setSelected}
-                />
+                  />
                 </SubMenu>
+
+                <Item
+                    title="Testing"
+                    to="/testpg"
+                    icon={<BuildOutlinedIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                />
             </Box>
         </Menu>
         </ProSidebar>
