@@ -54,51 +54,58 @@ const Analytics = () => {
 
 	const handlePlayerSelection = (event) => {
 		setSelectedPlayer(event.target.value);
+		setSelectedFilterYear("");
+		setSelectedFilterMonth("");
+		setSelectedFilterDay("");
 	};
 	const handleFilterYearSelection = (event) => {
 		setSelectedFilterYear(event.target.value);
+		setSelectedFilterMonth("");
+		setSelectedFilterDay("");
 	};
 	const handleFilterMonthSelection = (event) => {
 		setSelectedFilterMonth(event.target.value);
+		setSelectedFilterDay("");
 	};
 	const handleFilterDaySelection = (event) => {
 		setSelectedFilterDay(event.target.value);
+		
 	};
 
 	const getDataToPlot = () => {
 		let data;
 		if (!selectedPlayer && !overallData.Player_Yearly_Analytics) {
-			return [];
+		  return [];
 		}
 		if (selectedPlayer && playerData.Player_Yearly_Analytics) {
-			data = playerData.Player_Yearly_Analytics;
+		  data = playerData.Player_Yearly_Analytics;
 		} else {
-			data = overallData.Player_Yearly_Analytics;
+		  data = overallData.Player_Yearly_Analytics;
 		}
 		if (!selectedFilterYear && !selectedFilterMonth && !selectedFilterDay) {
-			return data.map((item) => [item.year, item.count]);
+		  return data.map((item) => [item.year, item.count]);
 		}
 		if (selectedFilterYear && !selectedFilterMonth && !selectedFilterDay) {
-			data =
-				selectedPlayer && playerData.Player_Monthly_Analytics
-					? playerData.Player_Monthly_Analytics
-					: overallData.Player_Monthly_Analytics;
-			data = data.filter((item) => item.year === selectedFilterYear);
-			return data.map((item) => [`${item.year}-${item.month}`, item.count]);
+		  data =
+			selectedPlayer && playerData.Player_Monthly_Analytics
+			  ? playerData.Player_Monthly_Analytics
+			  : overallData.Player_Monthly_Analytics;
+		  data = data.filter((item) => item.year === selectedFilterYear);
+		  return data.map((item) => [`${item.year}-${item.month}`, item.count]);
 		}
 		if (selectedFilterYear && selectedFilterMonth && !selectedFilterDay) {
-			data =
-				selectedPlayer && playerData.Player_Daily_Analytics
-					? playerData.Player_Daily_Analytics
-					: overallData.Player_Daily_Analytics;
-			data = data.filter(
-				(item) =>
-					item.year === selectedFilterYear && item.month === selectedFilterMonth
-			);
-			return data.map((item) => [
-				`${item.year}-${item.month}-${item.day}`,
-				item.count,
-			]);
+		  data =
+			selectedPlayer && playerData.Player_Daily_Analytics
+			  ? playerData.Player_Daily_Analytics
+			  : overallData.Player_Daily_Analytics;
+		  data = data.filter(
+			(item) =>
+			  item.year === selectedFilterYear && item.month === selectedFilterMonth
+		  );
+		  return data.map((item) => [
+			`${item.year}-${item.month}-${item.day}`,
+			item.count,
+		  ]);
 		}
 		if (selectedFilterYear && selectedFilterMonth && selectedFilterDay) {
 			data =
@@ -107,17 +114,14 @@ const Analytics = () => {
 					: overallData.Player_Daily_Analytics;
 			data = data.filter(
 				(item) =>
-					item.year === selectedFilterYear &&
-					item.month === selectedFilterMonth &&
-					item.day === selectedFilterDay
-			);
+					item.year === selectedFilterYear && item.month === selectedFilterMonth 
+					&& item.day === selectedFilterDay );
 			return data.map((item) => [
 				`${item.year}-${item.month}-${item.day}`,
-				item.count,
+					item.count,
 			]);
 		}
-	};
-
+	  };
 	const getYearOptions = () => {
 		if (!overallData.Player_Yearly_Analytics) {
 			return [];
