@@ -41,7 +41,7 @@ const PhantomTable = () => {
 				Get Players
 			</Button>
       <Box
-        m="40px 0 0 0"
+        m="20px 0 0 0"
         height="70vh"
         sx={{
           "& .MuiDataGrid-root": {

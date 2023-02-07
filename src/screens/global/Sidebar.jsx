@@ -8,9 +8,8 @@ import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import GamesOutlinedIcon from '@mui/icons-material/GamesOutlined';
 import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
-import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined';
-
-//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import BuildCircleOutlinedIcon from '@mui/icons-material/BuildCircleOutlined';
+import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
 import BarChartIcon from '@mui/icons-material/BarChart';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -121,6 +120,14 @@ const Sidebar = () => {
                     setSelected={setSelected}
                 />
 
+                <Item
+                    title="Accounts"
+                    to="/accounts"
+                    icon={<PeopleOutlinedIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                />
+
                 {/* <Typography
                     variant="h6"
                     color={colors.grey[300]}
@@ -148,7 +155,7 @@ const Sidebar = () => {
                 <Item
                     title="Testing"
                     to="/testpg"
-                    icon={<BuildOutlinedIcon />}
+                    icon={<BuildCircleOutlinedIcon />}
                     selected={selected}
                     setSelected={setSelected}
                 />

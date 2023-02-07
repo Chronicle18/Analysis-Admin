@@ -1,6 +1,5 @@
-import { Box } from "@mui/material";
-
-const Analytics = () => {
-	<Box> Phantom Pets </Box>
+const Test = () => {
+	return <div>Testing...</div>
+	
 };
-export default Analytics;
+export default Test;

@@ -4,7 +4,7 @@ import ReactEcharts from "echarts-for-react";
 import { Select, MenuItem } from "@mui/material";
 import Header from "./Header";
 
-const Analytics = () => {
+const PhantomAnalytics = () => {
 
 	const [playerList, setPlayerList] = useState([]);
 	const [selectedPlayer, setSelectedPlayer] = useState("");
@@ -18,7 +18,7 @@ const Analytics = () => {
 		async function fetchData() {
 			try {
 				const res = await Axios.get(
-					"http://13.215.25.111/tap_shap_player_list"
+					"http://54.255.93.215/phantom_pets/player_list"
 				);
 				setPlayerList(res.data);
 				console.log(playerList);
@@ -26,7 +26,7 @@ const Analytics = () => {
 				console.error(err);
 			}
 			try {
-				const res = await Axios.get("http://13.215.25.111/analytics/overall/");
+				const res = await Axios.get("http://54.255.93.215/phantom_pets/analytics/overall/");
 				setOverallData(res.data);
 				console.log(overallData);
 			} catch (err) {
@@ -41,7 +41,7 @@ const Analytics = () => {
 			if (selectedPlayer) {
 				try {
 					const res = await Axios.get(
-						`http://13.215.25.111/analytics/user/${selectedPlayer}/`
+						`http://54.255.93.215/phantom_pets/analytics/user/${selectedPlayer}/`
 					);
 					setPlayerData(res.data);
 					console.log(playerData);
@@ -164,7 +164,7 @@ const Analytics = () => {
 		<div className="App">
 			<Header subtitle={"Analytics"}/>
 			<Select
-				sx={{m:1, minWidth: 80}}
+                sx={{m:1, minWidth: 80}}
 				value={selectedPlayer}
 				onChange={handlePlayerSelection}
 				displayEmpty
@@ -177,7 +177,7 @@ const Analytics = () => {
 				))}
 			</Select>
 			<Select
-				sx={{m:1, minWidth: 80}}
+                sx={{m:1, minWidth: 80}}
 				value={selectedFilterYear}
 				onChange={handleFilterYearSelection}
 				displayEmpty
@@ -190,7 +190,7 @@ const Analytics = () => {
 				))}
 			</Select>
 			<Select
-				sx={{m:1, minWidth: 80}}
+                sx={{m:1, minWidth: 80}}
 				value={selectedFilterMonth}
 				onChange={handleFilterMonthSelection}
 				displayEmpty
@@ -203,7 +203,7 @@ const Analytics = () => {
 				))}
 			</Select>
 			<Select
-				sx={{m:1, minWidth: 80}}
+                sx={{m:1, minWidth: 80}}
 				value={selectedFilterDay}
 				onChange={handleFilterDaySelection}
 				displayEmpty
@@ -219,4 +219,4 @@ const Analytics = () => {
 		</div>
 	);
 };
-export default Analytics;
+export default PhantomAnalytics;
