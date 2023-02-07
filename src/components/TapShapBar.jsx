@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Axios from "axios";
 import ReactEcharts from "echarts-for-react";
 import { Select, MenuItem } from "@mui/material";
+import Header from "./Header";
 
 const Analytics = () => {
 
@@ -161,6 +162,7 @@ const Analytics = () => {
 	};
 	return (
 		<div className="App">
+			<Header subtitle={"Analytics"}/>
 			<Select
 				value={selectedPlayer}
 				onChange={handlePlayerSelection}

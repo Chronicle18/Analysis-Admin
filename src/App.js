@@ -6,6 +6,7 @@ import Dashboard from "./screens/dashboard";
 import Sidebar from './screens/global/Sidebar';
 import TapShap from './screens/tapShap';
 import TestPage from "./screens/testpg";
+import Phantom from "./screens/phantomPets";
 
 
 function App() {
@@ -23,6 +24,7 @@ const [theme, colorMode] = useMode();
               <Route path="/" element={<Dashboard />} />
               <Route path="/tapShap" element={<TapShap />} />
               <Route path="/testpg" element={<TestPage/>} />
+              <Route path="/phantomPets" element={<Phantom/>} />
             </Routes>
           </main>
         </div>

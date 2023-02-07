@@ -10,6 +10,8 @@ import GamesOutlinedIcon from '@mui/icons-material/GamesOutlined';
 import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
 import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined';
 
+//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import BarChartIcon from '@mui/icons-material/BarChart';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
     const theme = useTheme();
@@ -131,6 +133,13 @@ const Sidebar = () => {
                     title="Tap Shap"
                     to="/tapShap"
                     icon={<AnalyticsOutlinedIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                  <Item 
+                    title="Phantom Pets"
+                    to="/phantomPets"
+                    icon={<BarChartIcon />}
                     selected={selected}
                     setSelected={setSelected}
                   />
