@@ -16,7 +16,7 @@ const Dashboard = () => {
           <Header title="DASHBOARD" subtitle="Welcome To Your Dashboard" />
   
           <Box>
-            <Button
+            {/* <Button
               sx={{
                 backgroundColor: colors.blueAccent[700],
                 color: colors.grey[100],
@@ -27,7 +27,7 @@ const Dashboard = () => {
             >
               <DownloadOutlinedIcon sx={{ mr: "10px" }} />
               Download Analysis
-            </Button>
+            </Button> */}
           </Box>
         </Box>
         </Box>

@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import Header from "../../components/Header";
 import PhantomTable from "../../components/PhantomTable";
 import ReactEcharts from "../../components/PhantomChart";
+import PhantomPie from "../../components/PhantomPie";
 
 const Phantom = () => {
 
@@ -11,6 +12,7 @@ const Phantom = () => {
       <Header title={"Phantom Pets"} subtitle="LeaderBoard" />
       <PhantomTable />
       <ReactEcharts />
+      <PhantomPie />
       </Box>
     </Box>
   );

@@ -21,14 +21,12 @@ const PhantomAnalytics = () => {
 					"http://54.255.93.215/phantom_pets/player_list"
 				);
 				setPlayerList(res.data);
-				console.log(playerList);
 			} catch (err) {
 				console.error(err);
 			}
 			try {
 				const res = await Axios.get("http://54.255.93.215/phantom_pets/analytics/overall/");
 				setOverallData(res.data);
-				console.log(overallData);
 			} catch (err) {
 				console.error(err);
 			}

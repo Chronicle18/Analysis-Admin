@@ -7,10 +7,8 @@ import { tokens } from '../../theme';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import GamesOutlinedIcon from '@mui/icons-material/GamesOutlined';
-import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
 import BuildCircleOutlinedIcon from '@mui/icons-material/BuildCircleOutlined';
 import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
-import BarChartIcon from '@mui/icons-material/BarChart';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
     const theme = useTheme();
@@ -139,14 +137,20 @@ const Sidebar = () => {
                   <Item
                     title="Tap Shap"
                     to="/tapShap"
-                    icon={<AnalyticsOutlinedIcon />}
+                    icon={<img 
+                            width="21px"
+                            height="21px"
+                            src='../../assets/Tap_Shap.png' />}
                     selected={selected}
                     setSelected={setSelected}
                   />
                   <Item 
                     title="Phantom Pets"
                     to="/phantomPets"
-                    icon={<BarChartIcon />}
+                    icon={<img 
+                            width="21px"
+                            height="21px"
+                            src="../../assets/Phantom_Pets.png" />}
                     selected={selected}
                     setSelected={setSelected}
                   />
